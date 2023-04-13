@@ -1,0 +1,41 @@
+{
+  "name": "@icancode/express",
+  "version": "1.0.0",
+  "description": "This package includes all necessary express classes",
+  "main": "main",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint lib/**/*.ts",
+    "clean": "git clean -fx",
+    "prebuild": "yarn lint --fix",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://github.com:dotronglong/icancode-express.git"
+  },
+  "keywords": [
+    "icancode",
+    "express"
+  ],
+  "author": "Long Do <dotronglong@live.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dotronglong/icancode-express/issues"
+  },
+  "homepage": "https://github.com/dotronglong/icancode-express#readme",
+  "dependencies": {
+    "@icancode/base": "^1.0.1",
+    "@icancode/logger": "^1.0.4",
+    "express": "^4.18.2",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "@typescript-eslint/eslint-plugin": "^5.58.0",
+    "@typescript-eslint/parser": "^5.58.0",
+    "eslint": "^8.38.0",
+    "eslint-config-google": "^0.14.0",
+    "typescript": "^5.0.4"
+  }
+}

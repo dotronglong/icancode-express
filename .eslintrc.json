@@ -1,0 +1,24 @@
+{
+    "env": {
+        "es2021": true,
+        "node": true
+    },
+    "extends": [
+        "google"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": 13
+    },
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "ignorePatterns": [
+        "lib/**/*.js",
+        "lib/**/*.d.ts"
+    ],
+    "rules": {
+        "semi": "off",
+        "@typescript-eslint/semi": ["error"]
+    }
+}

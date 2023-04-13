@@ -1,0 +1,14 @@
+{
+  "include": [
+    "lib/**/*",
+    "main.ts"
+  ],
+  "exclude": [],
+  "compilerOptions": {
+    "target": "es5",
+    "declaration": true,
+    "outDir": ".",
+    "declarationMap": false,
+    "strictNullChecks": true
+  }
+}
