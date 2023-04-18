@@ -131,7 +131,7 @@ export default class ExpressLogger implements Logger {
     if (this.isFlushed) {
       return;
     }
-    
+
     const duration = Date.now() - this.timestamp;
     const data: HashMap = Object.assign({}, this.metadata, {
       Request: this.getRequestInformation(),
