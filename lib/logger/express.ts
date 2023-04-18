@@ -13,6 +13,7 @@ export default class ExpressLogger implements Logger {
   private traces: HashMap[];
   private timestamp: number;
   private duration: number;
+  private isFlushed: boolean;
 
   /**
    * Constructor
@@ -36,6 +37,7 @@ export default class ExpressLogger implements Logger {
     this.traces = [];
     this.timestamp = Date.now();
     this.duration = 0;
+    this.isFlushed = false;
   }
 
   /**
@@ -126,6 +128,10 @@ export default class ExpressLogger implements Logger {
    * Flush the logs
    */
   flush(): void {
+    if (this.isFlushed) {
+      return;
+    }
+    
     const duration = Date.now() - this.timestamp;
     const data: HashMap = Object.assign({}, this.metadata, {
       Request: this.getRequestInformation(),
@@ -135,6 +141,7 @@ export default class ExpressLogger implements Logger {
     });
 
     console.log(JSON.stringify(data));
+    this.isFlushed = true;
   }
 
   /**
