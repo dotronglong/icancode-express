@@ -5,7 +5,7 @@ import Installer from './installer';
 export default class ModuleLoader {
   private basePath: string;
 
-  constructor(basePath: string = __dirname) {
+  constructor(basePath: string = '.') {
     this.basePath = basePath;
   }
 
