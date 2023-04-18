@@ -2,16 +2,23 @@ import {Express} from 'express';
 import * as fs from 'fs';
 import Installer from './installer';
 
+/**
+ * ModuleLoader
+ */
 export default class ModuleLoader {
   private basePath: string;
 
+  /**
+   * Constructor
+   * @param {string=} basePath
+   */
   constructor(basePath: string = `${process.env.PWD}/dist`) {
     this.basePath = basePath;
   }
 
   /**
    * Detect modules
-   * @returns {Array<string>}
+   * @return {Array<string>}
    */
   detect(): Array<string> {
     let modules: Array<string> = [];
@@ -35,8 +42,8 @@ export default class ModuleLoader {
 
   /**
    * Load modules
-   * @param {Express} app 
-   * @returns {Array<string>}
+   * @param {Express} app
+   * @return {Array<string>}
    */
   load(app: Express): Array<string> {
     const modules = this.detect();

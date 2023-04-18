@@ -1,4 +1,4 @@
-import ExpressLogger from './lib/logger/express';
+import ExpressLogger from './lib/logger';
 import Installer from './lib/installer';
 import ModuleLoader from './lib/loader';
 
