@@ -6,7 +6,7 @@ import {Logger} from '@icancode/logger';
 /**
  * ExpressLogger
  */
-export default class ExpressLogger implements Logger {
+export class ExpressLogger implements Logger {
   private request: Request;
   private response: Response;
   private metadata: StringHashMap;
@@ -14,6 +14,7 @@ export default class ExpressLogger implements Logger {
   private timestamp: number;
   private duration: number;
   private isFlushed: boolean;
+  private ignoredHeaderNames: Array<string>;
 
   /**
    * Constructor
@@ -33,6 +34,7 @@ export default class ExpressLogger implements Logger {
     this.metadata = Object.assign({}, metadata, {
       Name: name || 'Logger',
       TraceID: uuidv4(),
+      RemoteAddress: request.headers['x-forwarded-for'] || request.socket.remoteAddress, // eslint-disable-line
     });
     this.traces = [];
     this.timestamp = Date.now();
@@ -168,4 +170,24 @@ export default class ExpressLogger implements Logger {
       Body: this.response.locals.body || {},
     };
   }
+
+  /**
+   * Ignore some headers by names
+   * @param {Array<string>} ignoredHeaderNames
+   */
+  ignoreHeaders(ignoredHeaderNames: Array<string>) {
+    this.ignoredHeaderNames = ignoredHeaderNames;
+  }
 }
+
+export const getLogger = function(response: Response): Logger {
+  let logger: Logger;
+  if (response.locals.logger === undefined) {
+    logger = new ExpressLogger(response.req, response, 'logger.application');
+    response.locals.logger = logger;
+  } else {
+    logger = (response.locals.logger as Logger);
+  }
+
+  return logger;
+};
