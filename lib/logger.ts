@@ -40,6 +40,7 @@ export class ExpressLogger implements Logger {
     this.timestamp = Date.now();
     this.duration = 0;
     this.isFlushed = false;
+    this.ignoredHeaderNames = [];
   }
 
   /**
