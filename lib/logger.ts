@@ -181,11 +181,11 @@ export class ExpressLogger implements Logger {
 
   /**
    * Remove ignored headers from input
-   * @param {StringHashMap} headers
-   * @return {StringHashMap}
+   * @param {any} headers
+   * @return {any}
    */
-  private filterHeaders(headers: StringHashMap): StringHashMap {
-    const data: StringHashMap = Object.assign({}, headers);
+  private filterHeaders(headers: any): any {
+    const data = Object.assign({}, headers);
     for (const name of this.ignoredHeaderNames) {
       delete data[name];
     }
@@ -194,6 +194,11 @@ export class ExpressLogger implements Logger {
   }
 }
 
+/**
+ * Retrieve logger
+ * @param {Response} response
+ * @return {Logger}
+ */
 export const getLogger = function(response: Response): Logger {
   let logger: Logger;
   if (response.locals.logger === undefined) {
