@@ -8,7 +8,6 @@ import {getLogger} from './logger';
 export class ExpressResponse {
   private _status: number;
   private _headers: StringHashMap;
-  private _body: any;
   private _response: Response;
 
   /**
@@ -18,18 +17,7 @@ export class ExpressResponse {
   constructor(response: Response) {
     this._status = 200;
     this._headers = {};
-    this._body = '';
     this._response = response;
-  }
-
-  /**
-   * Set response's body
-   * @param {*} body
-   * @return {ExpressResponse}
-   */
-  body(body: any): ExpressResponse {
-    this._body = body;
-    return this;
   }
 
   /**
@@ -75,9 +63,10 @@ export class ExpressResponse {
 
   /**
    * Send response out
-   * @param {boolean} reportError
+   * @param {*=} body
+   * @param {boolean=} reportError
    */
-  send(reportError: boolean = false) {
+  send(body: any = '', reportError: boolean = false) {
     if (this._response.locals.isSent) {
       // will not send if response was already sent
       return;
@@ -88,9 +77,8 @@ export class ExpressResponse {
       const h = Object.assign({}, this._headers || {}, {
         'Trace-ID': getLogger(this._response).get('TraceID'),
       });
-      const b = this._body || {};
-      this._response.locals.body = b;
-      this._response.status(s).set(h).json(b);
+      this._response.locals.body = body;
+      this._response.status(s).set(h).json(body);
       this._response.locals.isSent = true;
     } catch (e) {
       if (reportError) {

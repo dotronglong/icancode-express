@@ -154,7 +154,7 @@ export class ExpressLogger implements Logger {
     return {
       Method: this.request.method,
       Url: this.request.originalUrl,
-      Headers: this.request.headers,
+      Headers: this.filterHeaders(this.request.headers),
       Body: this.request.body || {},
     };
   }
@@ -177,6 +177,20 @@ export class ExpressLogger implements Logger {
    */
   ignoreHeaders(ignoredHeaderNames: Array<string>) {
     this.ignoredHeaderNames = ignoredHeaderNames;
+  }
+
+  /**
+   * Remove ignored headers from input
+   * @param {StringHashMap} headers
+   * @return {StringHashMap}
+   */
+  private filterHeaders(headers: StringHashMap): StringHashMap {
+    const data: StringHashMap = Object.assign({}, headers);
+    for (const name of this.ignoredHeaderNames) {
+      delete data[name];
+    }
+
+    return data;
   }
 }
 
