@@ -9,7 +9,6 @@ export class ExpressResponse {
   private _status: number;
   private _headers: StringHashMap;
   private _body: any;
-  private _isSent: boolean;
   private _response: Response;
 
   /**
@@ -20,7 +19,6 @@ export class ExpressResponse {
     this._status = 200;
     this._headers = {};
     this._body = '';
-    this._isSent = false;
     this._response = response;
   }
 
@@ -80,6 +78,11 @@ export class ExpressResponse {
    * @param {boolean} reportError
    */
   send(reportError: boolean = false) {
+    if (this._response.locals.isSent) {
+      // will not send if response was already sent
+      return;
+    }
+
     try {
       const s = this._status;
       const h = Object.assign({}, this._headers || {}, {
@@ -88,7 +91,7 @@ export class ExpressResponse {
       const b = this._body || {};
       this._response.locals.body = b;
       this._response.status(s).set(h).json(b);
-      this._isSent = true;
+      this._response.locals.isSent = true;
     } catch (e) {
       if (reportError) {
         throw e;
@@ -101,7 +104,7 @@ export class ExpressResponse {
    * @return {boolean}
    */
   isSent(): boolean {
-    return this._isSent;
+    return this._response.locals.isSent || false;
   }
 }
 
