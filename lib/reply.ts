@@ -1,6 +1,6 @@
 import {StringHashMap} from '@icancode/base';
 import {Response} from 'express';
-import {getLogger} from './logger';
+import {log} from './logger';
 
 /**
  * ExpressResponse
@@ -75,7 +75,7 @@ export class ExpressResponse {
     try {
       const s = this._status;
       const h = Object.assign({}, this._headers || {}, {
-        'Trace-ID': getLogger(this._response).get('TraceID'),
+        'Trace-ID': log(this._response).get('TraceID'),
       });
       this._response.locals.body = body;
       this._response.status(s).set(h).json(body);

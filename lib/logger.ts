@@ -200,7 +200,7 @@ export class ExpressLogger implements Logger {
  * @param {Response} response
  * @return {Logger}
  */
-export const getLogger = function(response: Response): Logger {
+export const log = function(response: Response): Logger {
   let logger: Logger;
   if (response.locals.logger === undefined) {
     logger = new ExpressLogger(response.req, response, 'logger.application');
