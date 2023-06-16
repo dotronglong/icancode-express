@@ -198,15 +198,15 @@ export class ExpressLogger implements Logger {
 /**
  * Retrieve logger
  * @param {Response} response
- * @return {Logger}
+ * @return {ExpressLogger}
  */
-export const log = function(response: Response): Logger {
-  let logger: Logger;
+export const log = function(response: Response): ExpressLogger {
+  let logger: ExpressLogger;
   if (response.locals.logger === undefined) {
     logger = new ExpressLogger(response.req, response, 'logger.application');
     response.locals.logger = logger;
   } else {
-    logger = (response.locals.logger as Logger);
+    logger = (response.locals.logger as ExpressLogger);
   }
 
   return logger;
