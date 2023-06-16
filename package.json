@@ -1,6 +1,6 @@
 {
   "name": "@icancode/express",
-  "version": "1.0.12",
+  "version": "1.0.14",
   "description": "This package includes all necessary express classes",
   "main": "main",
   "scripts": {

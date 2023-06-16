@@ -63,28 +63,35 @@ export class ExpressResponse {
 
   /**
    * Send response out
-   * @param {*=} body
-   * @param {boolean=} reportError
+   * @param {*} body
+   * @param {'json' | undefined} type
    */
-  send(body: any = '', reportError: boolean = false) {
-    if (this._response.locals.isSent) {
-      // will not send if response was already sent
+  send(body: any, type: 'json' | undefined = undefined) {
+    if (this.isSent()) {
+      // ignore it
       return;
     }
 
-    try {
-      const s = this._status;
-      const h = Object.assign({}, this._headers || {}, {
-        'Trace-ID': log(this._response).get('TraceID'),
-      });
-      this._response.locals.body = body;
-      this._response.status(s).set(h).json(body);
-      this._response.locals.isSent = true;
-    } catch (e) {
-      if (reportError) {
-        throw e;
-      }
+    const s = this._status;
+    const h = Object.assign({}, this._headers || {}, {
+      'Trace-ID': log(this._response).get('TraceID'),
+    });
+    this._response.locals.body = body;
+    this._response.locals.isSent = true;
+    this._response.status(s).set(h);
+    if (type === 'json') {
+      this._response.json(body);
+    } else {
+      this._response.send(body);
     }
+  }
+
+  /**
+   * Send response with JSON
+   * @param {*} body
+   */
+  json(body: any) {
+    this.send(body, 'json');
   }
 
   /**
