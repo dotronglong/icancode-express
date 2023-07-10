@@ -43,16 +43,44 @@ export default class ModuleLoader {
   /**
    * Load modules
    * @param {Express} app
-   * @return {Array<string>}
+   * @param {string[]} depends Ensure these modules are loaded first
+   * @return {string[]}
    */
-  load(app: Express): Array<string> {
-    const modules = this.detect();
-    const loadedModules: Array<string> = [];
+  load(app: Express, depends: string[] = []): string[] {
+    let loadedModules: string[] = [];
+
+    loadedModules = loadedModules.concat(this.__load(app, depends));
+    loadedModules = loadedModules.concat(this.__load(app, this.detect(), depends)); // eslint-disable-line max-len
+
+    return loadedModules;
+  }
+
+  /**
+   * Load specified modules with exclusions
+   * @param {Express} app
+   * @param {string[]} modules
+   * @param {string[]} excludes
+   * @return {string[]}
+   */
+  private __load(
+      app: Express,
+      modules: string[],
+      excludes: string[] = [],
+  ): string[] {
+    const loadedModules: string[] = [];
     for (const module of modules) {
+      if (excludes.indexOf(module) > -1) {
+        // ignore this module
+        continue;
+      }
+
       try {
         const file = `${this.basePath}/module/${module}/module`;
         const installer: Installer = require(file).default;
-        installer.install(app);
+        const result = installer.install(app);
+        if (typeof result === 'function') {
+          app.use(result);
+        }
         loadedModules.push(module);
       } catch (e) {
         console.error(`Unable to install module ${module}`, e.message);
