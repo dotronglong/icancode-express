@@ -1,6 +1,6 @@
 {
   "name": "@icancode/express",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "This package includes all necessary express classes",
   "main": "main",
   "scripts": {
@@ -27,10 +27,12 @@
   "dependencies": {
     "@icancode/base": "^1.0.1",
     "@icancode/logger": "^1.0.4",
+    "debug": "^4.3.7",
     "express": "^4.18.2",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@types/debug": "^4.1.12",
     "@types/express": "^5.0.0",
     "@types/node": "^18.15.11",
     "@types/uuid": "^10.0.0",
