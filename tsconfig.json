@@ -5,7 +5,9 @@
   ],
   "exclude": [],
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES6",
+    "module": "CommonJS",
+    "strict": true,
     "declaration": true,
     "outDir": ".",
     "declarationMap": false,

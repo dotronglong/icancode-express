@@ -24,6 +24,7 @@ export class ModuleLoader {
    */
   constructor(app: Express, ...modules: Module[]) {
     this.app = app;
+    this.registeredModules = {};
     this.register(...modules);
   }
 
@@ -66,11 +67,21 @@ export class ModuleBuilder {
   private installer: ModuleInstaller;
 
   /**
+   * Constructor
+   * @param {string} name
+   */
+  constructor(name: string) {
+    this.name = name;
+    this.installer = () => Promise.resolve();
+  }
+
+  /**
    * Return new builder
+   * @param {string} name
    * @return {ModuleBuilder}
    */
-  static builder(): ModuleBuilder {
-    return new ModuleBuilder();
+  static builder(name: string): ModuleBuilder {
+    return new ModuleBuilder(name);
   }
 
   /**
