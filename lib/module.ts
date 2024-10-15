@@ -1,11 +1,13 @@
 import {Express} from 'express';
 
+export type ModuleInstaller = (app: Express) => Promise<void>;
+
 /**
  * Module
  */
 export interface Module {
   name(): string;
-  install(app: Express): Promise<void>;
+  install: ModuleInstaller;
 }
 
 /**
@@ -53,5 +55,55 @@ export class ModuleLoader {
         .filter((task): task is Promise<void> => task !== undefined);
 
     await Promise.all(tasks);
+  }
+}
+
+/**
+ * ModuleBuilder
+ */
+export class ModuleBuilder {
+  private name: string;
+  private installer: ModuleInstaller;
+
+  /**
+   * Return new builder
+   * @return {ModuleBuilder}
+   */
+  static builder(): ModuleBuilder {
+    return new ModuleBuilder();
+  }
+
+  /**
+   * Return an instance of Module
+   * @return {Module}
+   */
+  build(): Module {
+    return {
+      name: () => this.name,
+      install: this.installer,
+    };
+  }
+
+  /**
+   * Set name
+   *
+   * @param {string} name
+   * @return {this}
+   */
+  withName(name: string): this {
+    this.name = name;
+
+    return this;
+  }
+
+  /**
+   * Set installer
+   * @param {ModuleInstaller} installer
+   * @return {this}
+   */
+  withInstaller(installer: ModuleInstaller): this {
+    this.installer = installer;
+
+    return this;
   }
 }
