@@ -1,13 +1,12 @@
 import {ExpressLogger, log} from './lib/logger';
 import {ExpressResponse, reply} from './lib/reply';
 import {handleError} from './lib/middleware';
-import Installer from './lib/installer';
-import ModuleLoader from './lib/loader';
+import {Module, Loader} from './lib/module';
 
 export {
   ExpressLogger,
-  Installer,
-  ModuleLoader,
+  Module,
+  Loader,
   ExpressResponse,
   log,
   reply,
