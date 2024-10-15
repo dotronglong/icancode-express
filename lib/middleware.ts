@@ -13,9 +13,10 @@ export const handleError = (e: any, request: Request, response: Response, next: 
       err = new HttpError(e.status);
     }
 
-    reply(response).status(err.status).json({
-      Code: err.code,
-      Message: err.message,
+    const {code, message, status} = err;
+    reply(response).status(status).json({
+      code,
+      message,
     });
 
     if (process.env.NODE_ENV !== 'test') {
