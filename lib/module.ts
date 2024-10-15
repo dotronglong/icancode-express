@@ -9,9 +9,9 @@ export interface Module {
 }
 
 /**
- * Loader
+ * ModuleLoader
  */
-export class Loader {
+export class ModuleLoader {
   private app: Express;
   private registeredModules: Record<string, Module>;
 
@@ -28,53 +28,30 @@ export class Loader {
   /**
    * Register module
    * @param {...Module[]} modules
-   * @return {Loader}
+   * @return {ModuleLoader}
    */
-  register(...modules: Module[]): Loader {
+  register(...modules: Module[]): ModuleLoader {
     modules.forEach((m) => this.registeredModules[m.name()] = m);
 
     return this;
   }
 
   /**
-   * Load modules
-   * @param {string[]} depends Ensure these modules are loaded first
+   * Load modules by names
+   * @param {...string[]} names The names of modules to be loaded
    * @return {Promise<void>}
    */
-  async load(depends: string[] = []): Promise<void> {
-    let names: string[];
+  async load(...names: string[]): Promise<void> {
     if (process.env.MODULES !== undefined) {
       names = process.env.MODULES.split(',');
     } else {
       names = Object.keys(this.registeredModules);
     }
 
-    if (depends.length > 0) {
-      await this.__loadModulesByNames(depends);
-    }
+    const tasks = names
+        .map((name) => this.registeredModules[name]?.install(this.app))
+        .filter((task): task is Promise<void> => task !== undefined);
 
-    await this.__loadModulesByNames(
-        names.filter((name) => depends.indexOf(name) < 0),
-    );
-  }
-
-  /**
-   * Load specified modules by names
-   * @param {string[]} names
-   * @return {Promise<void>}
-   */
-  private async __loadModulesByNames(
-      names: string[],
-  ): Promise<void[]> {
-    const tasks = names.map((name) => {
-      const module = this.registeredModules[name];
-      if (module !== undefined) {
-        return module.install(this.app);
-      }
-
-      return Promise.resolve();
-    });
-
-    return Promise.all(tasks);
+    await Promise.all(tasks);
   }
 }
