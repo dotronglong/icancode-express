@@ -20,7 +20,7 @@ export const handleError = (e: any, request: Request, response: Response, next: 
     });
 
     if (process.env.NODE_ENV !== 'test') {
-      log(response).error(e);
+      log(response).error(e.message || e);
       log(response).flush();
     }
   }
