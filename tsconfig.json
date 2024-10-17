@@ -1,8 +1,5 @@
 {
-  "include": [
-    "lib/**/*",
-    "main.ts"
-  ],
+  "include": ["lib/**/*", "main.ts"],
   "exclude": [],
   "compilerOptions": {
     "target": "ES6",

@@ -34,7 +34,8 @@ export class ExpressLogger implements Logger {
     this.metadata = Object.assign({}, metadata, {
       Name: name || 'Logger',
       TraceID: uuidv4(),
-      RemoteAddress: request.headers['x-forwarded-for'] || request.socket.remoteAddress, // eslint-disable-line
+      RemoteAddress:
+        request.headers['x-forwarded-for'] || request.socket.remoteAddress, // eslint-disable-line
     });
     this.traces = [];
     this.timestamp = Date.now();
@@ -206,7 +207,7 @@ export const log = function(response: Response): ExpressLogger {
     logger = new ExpressLogger(response.req, response, 'logger.application');
     response.locals.logger = logger;
   } else {
-    logger = (response.locals.logger as ExpressLogger);
+    logger = response.locals.logger as ExpressLogger;
   }
 
   return logger;
