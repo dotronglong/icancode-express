@@ -36,7 +36,7 @@ export class ModuleLoader {
    * @return {ModuleLoader}
    */
   register(...modules: Module[]): ModuleLoader {
-    modules.forEach((m) => this.registeredModules[m.name()] = m);
+    modules.forEach((m) => (this.registeredModules[m.name()] = m));
 
     return this;
   }
