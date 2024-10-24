@@ -5,11 +5,7 @@ type Handler = (
   response: Response,
   next: NextFunction
 ) => void;
-type AsyncHandler = (
-  request: Request,
-  response: Response,
-  next: NextFunction
-) => Promise<void>;
+type AsyncHandler = (request: Request, response: Response) => Promise<void>;
 
 /**
  * Handle async handler
@@ -18,6 +14,6 @@ type AsyncHandler = (
  */
 export function handle(handler: AsyncHandler): Handler {
   return (request: Request, response: Response, next: NextFunction) => {
-    handler(request, response, next).catch(next);
+    handler(request, response).then(next).catch(next);
   };
 }
