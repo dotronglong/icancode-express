@@ -1,4 +1,7 @@
-import {StringHashMap, HashMap} from '@icancode/base';
+import {
+  StringHashMap, HashMap,
+  setNestedValue, removeNestedValue,
+} from '@icancode/base';
 import {v4 as uuidv4} from 'uuid';
 import {Request, Response} from 'express';
 import {Logger} from '@icancode/logger';
@@ -14,7 +17,8 @@ export class ExpressLogger implements Logger {
   private timestamp: number;
   private duration: number;
   private isFlushed: boolean;
-  private ignoredHeaderNames: Array<string>;
+  private maskingPaths: string[];
+  private omittingPaths: string[];
 
   /**
    * Constructor
@@ -41,7 +45,8 @@ export class ExpressLogger implements Logger {
     this.timestamp = Date.now();
     this.duration = 0;
     this.isFlushed = false;
-    this.ignoredHeaderNames = [];
+    this.maskingPaths = [];
+    this.omittingPaths = [];
   }
 
   /**
@@ -144,6 +149,12 @@ export class ExpressLogger implements Logger {
       Traces: this.traces,
     });
 
+    // mask sensitive data
+    setNestedValue(data, this.maskingPaths, '******');
+
+    // omit unnecessary data
+    removeNestedValue(data, this.omittingPaths);
+
     console.log(JSON.stringify(data));
     this.isFlushed = true;
   }
@@ -156,7 +167,7 @@ export class ExpressLogger implements Logger {
     return {
       Method: this.request.method,
       Url: this.request.originalUrl,
-      Headers: this.filterHeaders(this.request.headers),
+      Headers: this.request.headers,
       Body: this.request.body || {},
     };
   }
@@ -174,25 +185,38 @@ export class ExpressLogger implements Logger {
   }
 
   /**
-   * Ignore some headers by names
-   * @param {Array<string>} ignoredHeaderNames
+   * Specify paths to be masked.
+   * Ensure sensitive data is protected
+   *
+   * @param {string[]} maskingPaths
+   * @param {boolean} merge
+   * @return {this}
    */
-  ignoreHeaders(ignoredHeaderNames: Array<string>) {
-    this.ignoredHeaderNames = ignoredHeaderNames;
+  mask(maskingPaths: string[], merge = true): this {
+    if (merge) {
+      this.maskingPaths = this.maskingPaths.concat(maskingPaths);
+    } else {
+      this.maskingPaths = maskingPaths;
+    }
+
+    return this;
   }
 
   /**
-   * Remove ignored headers from input
-   * @param {any} headers
-   * @return {any}
+   * Specify paths to be omitted.
+   *
+   * @param {string[]} omittingPaths
+   * @param {boolean} merge
+   * @return {this}
    */
-  private filterHeaders(headers: any): any {
-    const data = Object.assign({}, headers);
-    for (const name of this.ignoredHeaderNames) {
-      delete data[name];
+  omit(omittingPaths: string[], merge = true): this {
+    if (merge) {
+      this.omittingPaths = this.omittingPaths.concat(omittingPaths);
+    } else {
+      this.omittingPaths = omittingPaths;
     }
 
-    return data;
+    return this;
   }
 }
 
