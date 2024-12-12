@@ -1,6 +1,8 @@
 import {
-  StringHashMap, HashMap,
-  setNestedValue, removeNestedValue,
+  StringHashMap,
+  HashMap,
+  setNestedValue,
+  removeNestedValue,
 } from '@icancode/base';
 import {v4 as uuidv4} from 'uuid';
 import {Request, Response} from 'express';
@@ -28,10 +30,10 @@ export class ExpressLogger implements Logger {
    * @param {StringHashMap=} metadata
    */
   constructor(
-      request: Request,
-      response: Response,
-      name?: string,
-      metadata: StringHashMap = {},
+    request: Request,
+    response: Response,
+    name?: string,
+    metadata: StringHashMap = {}
   ) {
     this.request = request;
     this.response = response;
@@ -225,7 +227,7 @@ export class ExpressLogger implements Logger {
  * @param {Response} response
  * @return {ExpressLogger}
  */
-export const log = function(response: Response): ExpressLogger {
+export const log = function (response: Response): ExpressLogger {
   let logger: ExpressLogger;
   if (response.locals.logger === undefined) {
     logger = new ExpressLogger(response.req, response, 'logger.application');
