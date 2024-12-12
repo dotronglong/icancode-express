@@ -55,8 +55,8 @@ export class ModuleLoader {
 
     log('load modules', names);
     const tasks = names
-        .map((name) => this.registeredModules[name]?.install(this.app))
-        .filter((task): task is Promise<void> => task !== undefined);
+      .map((name) => this.registeredModules[name]?.install(this.app))
+      .filter((task): task is Promise<void> => task !== undefined);
 
     await Promise.all(tasks);
   }
