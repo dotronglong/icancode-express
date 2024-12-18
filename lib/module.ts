@@ -1,7 +1,7 @@
 import {Express} from 'express';
-import debug from 'debug';
+import {createDebug} from '@icancode/base';
 
-const log = debug('icancode:express:module');
+const debug = createDebug('icancode:express:module');
 export type ModuleInstaller = (app: Express) => Promise<void>;
 
 /**
@@ -53,7 +53,7 @@ export class ModuleLoader {
       names = Object.keys(this.registeredModules);
     }
 
-    log('load modules', names);
+    debug('load modules', names);
     const tasks = names
       .map((name) => this.registeredModules[name]?.install(this.app))
       .filter((task): task is Promise<void> => task !== undefined);

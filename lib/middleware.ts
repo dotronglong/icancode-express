@@ -1,8 +1,8 @@
-import {HttpError, isHttpError} from '@icancode/base';
+import {HttpError, isHttpError, createDebug} from '@icancode/base';
 import {Request, Response, NextFunction} from 'express';
 import {reply} from './reply';
 import {log} from './logger';
-const debug = require('debug')('icancode:express:middleware');
+const debug = createDebug('icancode:express:middleware');
 
 export const handleError = (
   e: any,
