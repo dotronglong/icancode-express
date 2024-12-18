@@ -1,6 +1,6 @@
 {
   "name": "@icancode/express",
-  "version": "1.1.11",
+  "version": "1.1.12",
   "description": "This package includes all necessary express classes",
   "main": "main",
   "scripts": {
@@ -26,8 +26,9 @@
   },
   "homepage": "https://github.com/dotronglong/icancode-express#readme",
   "dependencies": {
-    "@icancode/base": "^1.1.0",
-    "@icancode/logger": "^1.0.4"
+    "@icancode/base": "^1.1.9",
+    "@icancode/logger": "^1.0.4",
+    "uuid": "^11.0.3"
   },
   "devDependencies": {
     "@types/debug": "^4.1.12",
@@ -37,14 +38,14 @@
     "@typescript-eslint/eslint-plugin": "^5.58.0",
     "@typescript-eslint/parser": "^5.58.0",
     "assert": "^2.0.0",
-    "eslint": "^8.38.0",
+    "debug": "^4.4.0",
+    "eslint": "^8.57.1",
     "eslint-config-google": "^0.14.0",
     "mocha": "^10.2.0",
     "prettier": "^3.3.3",
     "typescript": "^5.0.4"
   },
   "peerDependencies": {
-    "express": "^4.21.2",
-    "uuid": "^11.0.3"
+    "express": "^4.21.2"
   }
 }
