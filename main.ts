@@ -14,10 +14,11 @@ export {
   Module,
   ModuleLoader,
   ModuleBuilder,
-  ModuleInstaller,
   ExpressResponse,
   log,
   reply,
   handleError,
   handle,
 };
+
+export type {ModuleInstaller};
