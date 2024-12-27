@@ -43,22 +43,43 @@ export class ModuleLoader {
 
   /**
    * Load modules by names
-   * @param {...string[]} names The names of modules to be loaded
+   * @param {string[]} names Specify the name of modules to be loaded
    * @return {Promise<void>}
    */
   async load(...names: string[]): Promise<void> {
-    if (process.env.MODULES !== undefined) {
-      names = process.env.MODULES.split(',');
-    } else {
-      names = Object.keys(this.registeredModules);
-    }
+    // Get the module names to load
+    const moduleNames = this.detectLoadingModuleNames(names);
 
-    debug('load modules', names);
-    const tasks = names
+    debug('load modules', moduleNames);
+
+    // Gather installation tasks for the modules
+    const tasks = moduleNames
         .map((name) => this.registeredModules[name]?.install(this.app))
         .filter((task): task is Promise<void> => task !== undefined);
 
+    // Wait for all tasks to complete
     await Promise.all(tasks);
+  }
+
+  /**
+   * Detect module names
+   * @param {string[]} names The modules to be loaded
+   * @return {string[]} List of module names
+   */
+  private detectLoadingModuleNames(names: string[]): string[] {
+    let moduleNames: string[];
+    if (names.length > 0) {
+      moduleNames = names;
+    } else {
+      // Load all registered modules when none of modules is specified
+      moduleNames = Object.keys(this.registeredModules);
+    }
+
+    const moduleNamesFromEnv = process.env.MODULES ?
+      process.env.MODULES.split(',').filter(Boolean) :
+      [];
+
+    return moduleNames.concat(moduleNamesFromEnv);
   }
 }
 
