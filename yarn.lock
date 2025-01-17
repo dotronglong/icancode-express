@@ -67,10 +67,10 @@
   optionalDependencies:
     debug "^4.4.0"
 
-"@icancode/logger@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@icancode/logger/-/logger-1.1.0.tgz#7895f4eaf648f92ad7e741d2df23a382d81948b6"
-  integrity sha512-elS5UlZpBtj0/FW6RKrs1OvCltazVUyzZNxD8bJ5cggajk4qR+K78j1WnK07+XR74jeo7Ts8/hoMp6X5eXTiCQ==
+"@icancode/logger@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@icancode/logger/-/logger-1.1.1.tgz#b62d197861b19b94288e02aa4b590fb723399199"
+  integrity sha512-Tyb3poX0QIFML3RUQyTynjghDRqblfA73549C0ZrtOVqm28oV1kjfFxrsqT1aMkLvxnSQWVkA/sCN1XkT546SQ==
   dependencies:
     "@icancode/base" "^1.1.0"
 
