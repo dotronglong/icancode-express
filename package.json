@@ -27,7 +27,7 @@
   "homepage": "https://github.com/dotronglong/icancode-express#readme",
   "dependencies": {
     "@icancode/base": "^1.1.9",
-    "@icancode/logger": "^1.1.0",
+    "@icancode/logger": "^1.1.1",
     "uuid": "^11.0.3"
   },
   "devDependencies": {
