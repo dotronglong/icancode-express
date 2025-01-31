@@ -28,7 +28,7 @@
   "dependencies": {
     "@icancode/base": "^1.1.9",
     "@icancode/logger": "^1.1.0",
-    "uuid": "^11.0.3"
+    "uuid": "^11.0.5"
   },
   "devDependencies": {
     "@types/debug": "^4.1.12",
